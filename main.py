@@ -13,16 +13,16 @@ import pyjokes
 # SpeechRecognition and mic input (optional if you use keyboard fallback)
 import speech_recognition as sr
 
-# -------------------------
+
 # Configuration
-# -------------------------
+
 WAKE_WORDS = ("jarvis", "hey jarvis")  # You can say "Jarvis ..." before a command (optional)
 USE_TEXT_INPUT = False  # Set True to type commands instead of using microphone
 VOICE_RATE = 180        # TTS speed (words per minute). Try 160–190 for clarity
 
-# -------------------------
+
 # Speech: Text → Speech
-# -------------------------
+
 engine = pyttsx3.init()
 engine.setProperty("rate", VOICE_RATE)
 # Optional: choose a voice (0/1 on many systems). Comment out if not needed.
@@ -42,9 +42,8 @@ def speak(text: str) -> None:
     engine.runAndWait()
 
 
-# -------------------------
 # Listening: Speech → Text
-# -------------------------
+
 _recognizer = sr.Recognizer()
 
 
@@ -72,9 +71,8 @@ def listen(timeout: int = 5, phrase_time_limit: int = 8) -> str:
         return ""
 
 
-# -------------------------
 # Helpers
-# -------------------------
+
 
 def greet() -> None:
     hour = _dt.datetime.now().hour
@@ -94,9 +92,9 @@ def _maybe_strip_wakeword(text: str) -> str:
     return text
 
 
-# -------------------------
+
 # Command router
-# -------------------------
+
 
 def process_command(cmd: str) -> bool:
     """Return False to exit, True to continue."""
@@ -129,7 +127,7 @@ def process_command(cmd: str) -> bool:
         webbrowser.open("https://www.google.com")
         return True
 
-    # 4) Play on YouTube (e.g., "play kesariya on youtube")
+     # Play on YouTube (e.g., "play kesariya on youtube")
     if cmd.startswith("play "):
         query = cmd.replace("play ", "", 1).replace("on youtube", "").strip()
         if query:
@@ -142,7 +140,7 @@ def process_command(cmd: str) -> bool:
             speak("What should I play?")
         return True
 
-    # 5) Wikipedia quick answer (e.g., "wikipedia virat kohli" or "who is virat kohli")
+    #  Wikipedia quick answer (e.g., "wikipedia virat kohli" or "who is virat kohli")
     if "wikipedia" in cmd or cmd.startswith("who is ") or cmd.startswith("what is "):
         query = cmd.replace("wikipedia", "").replace("who is", "").replace("what is", "").strip()
         if query:
@@ -161,7 +159,7 @@ def process_command(cmd: str) -> bool:
             speak("Tell me what to search on Wikipedia.")
         return True
 
-    # 6) Joke
+    # Joke
     if "joke" in cmd:
         try:
             joke = pyjokes.get_joke()
@@ -170,15 +168,15 @@ def process_command(cmd: str) -> bool:
             speak("I tried to find a joke, but something went wrong.")
         return True
 
-    # 7) Fallback: offer a Google search
+    # Fallback: offer a Google search
     speak("Want me to search that on the web?")
     webbrowser.open("https://www.google.com/search?q=" + _uq.quote(cmd))
     return True
 
 
-# -------------------------
+
 # Main loop
-# -------------------------
+
 
 def main() -> None:
     greet()
